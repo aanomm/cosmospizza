@@ -182,15 +182,16 @@
     class="text-left py-8 text-[rgb(113,32,30)] font-mono"
   >
     <p class="text-xl font-bold mb-2">Booking Request Received!</p>
-    <p>Thanks for booking COSMO's.<br>We'll see you at <span class="font-bold">159 Monash Road, Parkville</span> on
-      <span x-text="new Date(selectedDate).toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })"></span> at
-      <span x-text="(() => {
-        const [hours, minutes] = selectedTime.split(':');
-        const hour = parseInt(hours);
-        const ampm = hour >= 12 ? 'PM' : 'AM';
-        const hour12 = hour % 12 || 12;
-        return `${hour12}:${minutes} ${ampm}`;
-      })()"></span>.
+    <p>Thanks for booking COSMO's.<br>We'll see you at <span class="font-bold">159 Monash Road, Parkville</span> at
+      <span class="font-bold">
+        <span x-text="(() => {
+          const [hours, minutes] = selectedTime.split(':');
+          const hour = parseInt(hours);
+          const ampm = hour >= 12 ? 'PM' : 'AM';
+          const hour12 = hour % 12 || 12;
+          return `${hour12}:${minutes} ${ampm}`;
+        })()"></span> on
+        <span x-text="new Date(selectedDate).toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })"></span></span>.
     </p>
   </div>
 </div>
