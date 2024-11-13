@@ -5,8 +5,12 @@
 
 <div x-data="{
   submitted: false,
+  selectedDate: '',
+  selectedTime: '',
   handleSubmit(e) {
     e.preventDefault()
+    this.selectedDate = e.target.date.value
+    this.selectedTime = e.target.time.value
     fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -105,8 +109,8 @@
           this.availableTimes = times;
         }
       }
-    }">
-      <div class="relative">
+    }" class="flex gap-4">
+      <div class="relative flex-1">
         <label for="date" class="block text-[rgb(113,32,30)] font-mono">Date</label>
         <input
           type="date"
@@ -116,18 +120,19 @@
           x-model="selectedDate"
           @change="updateTimes"
           min={new Date().toISOString().split('T')[0]}
-          class="w-full p-2 pl-10 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)] [&::-webkit-calendar-picker-indicator]:w-8 [&::-webkit-calendar-picker-indicator]:h-8 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:opacity-100 cursor-pointer"
+          class="w-full h-[42px] p-2 pr-12 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)] [&::-webkit-calendar-picker-indicator]:w-8 [&::-webkit-calendar-picker-indicator]:h-8 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-2 [&::-webkit-calendar-picker-indicator]:opacity-100 cursor-pointer"
+          @click="$el.showPicker()"
         />
       </div>
 
-      <div>
+      <div class="relative flex-1">
         <label for="time" class="block text-[rgb(113,32,30)] font-mono">Time</label>
         <select
           name="time"
           id="time"
           required
           x-model="selectedTime"
-          class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
+          class="w-full h-[42px] p-2 pr-12 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)] appearance-none cursor-pointer"
         >
           <option value="">Select a time</option>
           <template x-for="time in availableTimes" :key="time">
@@ -138,6 +143,9 @@
             </option>
           </template>
         </select>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 absolute right-2 top-[24px] p-1 pointer-events-none text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
       </div>
     </div>
 
@@ -169,6 +177,15 @@
     class="text-left py-8 text-[rgb(113,32,30)] font-mono"
   >
     <p class="text-xl font-bold mb-2">Booking Request Received!</p>
-    <p>We'll be in touch shortly to confirm your booking.</p>
+    <p>Thanks for booking COSMO's. We'll see you at 159 Monash Road, Parkville on
+      <span x-text="new Date(selectedDate).toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })"></span> at
+      <span x-text="(() => {
+        const [hours, minutes] = selectedTime.split(':');
+        const hour = parseInt(hours);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 || 12;
+        return `${hour12}:${minutes} ${ampm}`;
+      })()"></span>.
+    </p>
   </div>
 </div>
