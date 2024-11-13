@@ -25,7 +25,6 @@
   }
 }">
   <form
-    netlify
     name="booking"
     method="POST"
     data-netlify="true"
@@ -34,6 +33,7 @@
     class="mt-4 space-y-4 text-left"
     @submit="handleSubmit"
     x-show="!submitted"
+    action="/success"
   >
     <div class="hidden">
       <label>

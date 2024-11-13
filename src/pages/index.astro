@@ -61,6 +61,14 @@ import BookingForm from '../components/BookingForm.astro';
         x-cloak
         class="p-6 border-4 border-t-0 border-[rgb(113,32,30)] rounded-b bg-[rgb(251,249,229)]"
       >
+        <form name="booking" netlify netlify-honeypot="bot-field" hidden>
+          <input type="text" name="name" />
+          <input type="tel" name="phone" />
+          <input type="email" name="email" />
+          <input type="date" name="date" />
+          <input type="time" name="time" />
+          <input type="number" name="guests" />
+        </form>
         <BookingForm />
       </div>
     </div>
