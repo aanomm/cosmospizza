@@ -136,9 +136,14 @@
         >
           <option value="">Select a time</option>
           <template x-for="time in availableTimes" :key="time">
-            <option x-text="time.includes('13') ?
-              time.replace('13', '1').replace('14', '2').replace('15', '3') + ' PM' :
-              time + ' AM'"
+            <option
+              x-text="(() => {
+                const [hours] = time.split(':');
+                const hour = parseInt(hours);
+                const ampm = hour >= 12 ? 'PM' : 'AM';
+                const hour12 = hour % 12 || 12;
+                return `${hour12}:${time.split(':')[1]} ${ampm}`;
+              })()"
               :value="time">
             </option>
           </template>
@@ -177,7 +182,7 @@
     class="text-left py-8 text-[rgb(113,32,30)] font-mono"
   >
     <p class="text-xl font-bold mb-2">Booking Request Received!</p>
-    <p>Thanks for booking COSMO's. We'll see you at 159 Monash Road, Parkville on
+    <p>Thanks for booking COSMO's.<br>We'll see you at <span class="font-bold">159 Monash Road, Parkville</span> on
       <span x-text="new Date(selectedDate).toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })"></span> at
       <span x-text="(() => {
         const [hours, minutes] = selectedTime.split(':');
