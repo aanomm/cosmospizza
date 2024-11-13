@@ -1,132 +1,173 @@
-<form
-  name="booking"
-  method="POST"
-  data-netlify="true"
-  data-netlify-honeypot="bot-field"
-  data-netlify-recaptcha="true"
-  class="mt-4 space-y-4 text-left"
->
-  <div class="hidden">
-    <label>
-      Don't fill this out if you're human:
-      <input name="bot-field" />
-    </label>
-  </div>
+<script>
+  import confetti from 'canvas-confetti';
+  window.confetti = confetti;
+</script>
 
-  <input type="hidden" name="form-name" value="booking" />
+<div x-data="{
+  submitted: false,
+  handleSubmit(e) {
+    e.preventDefault()
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(e.target)).toString()
+    })
+    .then(() => {
+      this.submitted = true
+      e.target.reset()
+      window.confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#71201E', '#FBF9E5']
+      });
+    })
+  }
+}">
+  <form
+    name="booking"
+    method="POST"
+    data-netlify="true"
+    data-netlify-honeypot="bot-field"
+    data-netlify-recaptcha="true"
+    class="mt-4 space-y-4 text-left"
+    @submit="handleSubmit"
+    x-show="!submitted"
+  >
+    <div class="hidden">
+      <label>
+        Don't fill this out if you're human:
+        <input name="bot-field" />
+      </label>
+    </div>
 
-  <div>
-    <label for="name" class="block text-[rgb(113,32,30)] font-mono">Name</label>
-    <input
-      type="text"
-      name="name"
-      id="name"
-      required
-      class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
-    />
-  </div>
+    <input type="hidden" name="form-name" value="booking" />
 
-  <div>
-    <label for="phone" class="block text-[rgb(113,32,30)] font-mono">Phone</label>
-    <input
-      type="tel"
-      name="phone"
-      id="phone"
-      required
-      class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
-    />
-  </div>
-
-  <div>
-    <label for="email" class="block text-[rgb(113,32,30)] font-mono">Email</label>
-    <input
-      type="email"
-      name="email"
-      id="email"
-      required
-      class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
-    />
-  </div>
-
-  <div x-data="{
-    availableTimes: [],
-    selectedDate: '',
-    updateTimes() {
-      const now = new Date();
-      const selected = new Date(this.selectedDate);
-      const isToday = selected.toDateString() === now.toDateString();
-
-      const times = [
-        '11:00', '11:30', '12:00', '12:30', '13:00',
-        '13:30', '14:00', '14:30', '15:00', '15:30'
-      ];
-
-      if (isToday) {
-        const currentTime = now.getHours() * 60 + now.getMinutes();
-        this.availableTimes = times.filter(time => {
-          const [hours, minutes] = time.split(':').map(Number);
-          const timeInMinutes = hours * 60 + minutes;
-          return timeInMinutes > currentTime + 30;
-        });
-      } else {
-        this.availableTimes = times;
-      }
-    }
-  }">
     <div>
-      <label for="date" class="block text-[rgb(113,32,30)] font-mono">Date</label>
+      <label for="name" class="block text-[rgb(113,32,30)] font-mono">Name</label>
       <input
-        type="date"
-        name="date"
-        id="date"
+        type="text"
+        name="name"
+        id="name"
         required
-        x-model="selectedDate"
-        @change="updateTimes"
-        min={new Date().toISOString().split('T')[0]}
         class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
       />
     </div>
 
     <div>
-      <label for="time" class="block text-[rgb(113,32,30)] font-mono">Time</label>
-      <select
-        name="time"
-        id="time"
+      <label for="phone" class="block text-[rgb(113,32,30)] font-mono">Phone</label>
+      <input
+        type="tel"
+        name="phone"
+        id="phone"
         required
-        x-model="selectedTime"
         class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
-      >
-        <option value="">Select a time</option>
-        <template x-for="time in availableTimes" :key="time">
-          <option x-text="time.includes('13') ?
-            time.replace('13', '1').replace('14', '2').replace('15', '3') + ' PM' :
-            time + ' AM'"
-            :value="time">
-          </option>
-        </template>
-      </select>
+      />
     </div>
-  </div>
 
-  <div>
-    <label for="guests" class="block text-[rgb(113,32,30)] font-mono">Number of Guests</label>
-    <input
-      type="number"
-      name="guests"
-      id="guests"
-      min="1"
-      max="20"
-      required
-      class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
-    />
-  </div>
+    <div>
+      <label for="email" class="block text-[rgb(113,32,30)] font-mono">Email</label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        required
+        class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
+      />
+    </div>
 
-  <div data-netlify-recaptcha="true"></div>
+    <div x-data="{
+      availableTimes: [],
+      selectedDate: new Date().toISOString().split('T')[0],
+      selectedTime: '',
+      init() {
+        this.updateTimes()
+      },
+      updateTimes() {
+        const now = new Date();
+        const selected = new Date(this.selectedDate);
+        const isToday = selected.toDateString() === now.toDateString();
 
-  <button
-    type="submit"
-    class="w-full py-2 px-4 bg-[rgb(113,32,30)] text-white rounded font-mono transition-all duration-200 hover:opacity-90"
+        const times = [
+          '11:00', '11:30', '12:00', '12:30', '13:00',
+          '13:30', '14:00', '14:30', '15:00', '15:30'
+        ];
+
+        if (isToday) {
+          const currentTime = now.getHours() * 60 + now.getMinutes();
+          this.availableTimes = times.filter(time => {
+            const [hours, minutes] = time.split(':').map(Number);
+            const timeInMinutes = hours * 60 + minutes;
+            return timeInMinutes > currentTime + 30;
+          });
+        } else {
+          this.availableTimes = times;
+        }
+      }
+    }">
+      <div class="relative">
+        <label for="date" class="block text-[rgb(113,32,30)] font-mono">Date</label>
+        <input
+          type="date"
+          name="date"
+          id="date"
+          required
+          x-model="selectedDate"
+          @change="updateTimes"
+          min={new Date().toISOString().split('T')[0]}
+          class="w-full p-2 pl-10 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)] [&::-webkit-calendar-picker-indicator]:w-8 [&::-webkit-calendar-picker-indicator]:h-8 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:opacity-100 cursor-pointer"
+        />
+      </div>
+
+      <div>
+        <label for="time" class="block text-[rgb(113,32,30)] font-mono">Time</label>
+        <select
+          name="time"
+          id="time"
+          required
+          x-model="selectedTime"
+          class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
+        >
+          <option value="">Select a time</option>
+          <template x-for="time in availableTimes" :key="time">
+            <option x-text="time.includes('13') ?
+              time.replace('13', '1').replace('14', '2').replace('15', '3') + ' PM' :
+              time + ' AM'"
+              :value="time">
+            </option>
+          </template>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label for="guests" class="block text-[rgb(113,32,30)] font-mono">Number of Guests</label>
+      <input
+        type="number"
+        name="guests"
+        id="guests"
+        min="1"
+        max="20"
+        required
+        class="w-full p-2 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)]"
+      />
+    </div>
+
+    <!-- <div data-netlify-recaptcha="true"></div> -->
+
+    <button
+      type="submit"
+      class="w-full py-2 px-4 bg-[rgb(113,32,30)] text-white rounded font-mono transition-all duration-200 hover:opacity-90"
+    >
+      Submit Booking Request
+    </button>
+  </form>
+
+  <div
+    x-show="submitted"
+    class="text-left py-8 text-[rgb(113,32,30)] font-mono"
   >
-    Submit Booking Request
-  </button>
-</form>
+    <p class="text-xl font-bold mb-2">Booking Request Received!</p>
+    <p>We'll be in touch shortly to confirm your booking.</p>
+  </div>
+</div>

@@ -17,10 +17,14 @@
     "@tailwindcss/typography": "^0.5.15",
     "alpinejs": "^3.14.3",
     "astro": "^4.16.10",
+    "canvas-confetti": "^1.9.3",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.14",
     "tailwindcss-motion": "0.4.1-beta"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4"
   }
 }
