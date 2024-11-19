@@ -87,7 +87,9 @@ const menu = await getEntry('menu', 'main');
                                  {subsection.items.map(subitem => (
                                    <div class="flex justify-between">
                                      <span>{subitem.name}</span>
-                                     <span class="font-bold text-[rgb(113,32,30)]">${subitem.price}</span>
+                                     <span class="font-bold text-[rgb(113,32,30)]">
+                                       ${subsection.title === "Soft Drinks" ? subitem.price.toFixed(2) : subitem.price}
+                                     </span>
                                    </div>
                                  ))}
                                </div>
@@ -98,7 +100,9 @@ const menu = await getEntry('menu', 'main');
                          <>
                            <div class="flex justify-between">
                              <span class="font-bold text-[rgb(113,32,30)]">{item.name}</span>
-                             <span class="font-bold text-[rgb(113,32,30)]">${item.price}</span>
+                             <span class="font-bold text-[rgb(113,32,30)]">
+                               ${section.title === "Soft Drinks" ? item.price.toFixed(2) : item.price}
+                             </span>
                            </div>
                            {item.description && <p class="text-sm">{item.description}</p>}
                          </>

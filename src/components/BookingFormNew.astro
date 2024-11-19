@@ -5,7 +5,7 @@
 
 <div x-data="{
   submitted: false,
-  selectedDate: '',
+  selectedDate: '2024-11-29',
   selectedTime: '',
   handleSubmit(e) {
     e.preventDefault()
@@ -26,8 +26,22 @@
         colors: ['#71201E', '#FBF9E5']
       });
     })
+  },
+  allowedDates: [
+    '2024-11-29',
+    '2024-11-30',
+    '2024-12-11',
+    '2024-12-12',
+    '2024-12-13',
+    '2024-12-14'
+  ],
+  isDateAllowed(date) {
+    return this.allowedDates.includes(date);
   }
-}">
+}" x-init="$nextTick(() => {
+  // Force the date input to show the correct initial value on page load
+  document.getElementById('date').value = selectedDate
+})">
   <form
     name="booking"
     method="POST"
@@ -82,47 +96,59 @@
     </div>
 
     <div x-data="{
-      availableTimes: [],
-      selectedDate: new Date().toISOString().split('T')[0],
+      availableTimes: [
+        '17:00', '17:15', '17:30', '17:45',
+        '18:00', '18:15', '18:30', '18:45',
+        '19:00', '19:15', '19:30'
+      ],
+      selectedDate: '',
       selectedTime: '',
       init() {
         this.updateTimes()
       },
       updateTimes() {
+        if (!this.selectedDate || !$root.isDateAllowed(this.selectedDate)) {
+          return;
+        }
+
         const now = new Date();
         const selected = new Date(this.selectedDate);
         const isToday = selected.toDateString() === now.toDateString();
 
-        const times = [
-          '11:00', '11:30', '12:00', '12:30', '13:00',
-          '13:30', '14:00', '14:30', '15:00', '15:30'
-        ];
-
         if (isToday) {
           const currentTime = now.getHours() * 60 + now.getMinutes();
-          this.availableTimes = times.filter(time => {
+          this.availableTimes = this.availableTimes.filter(time => {
             const [hours, minutes] = time.split(':').map(Number);
             const timeInMinutes = hours * 60 + minutes;
             return timeInMinutes > currentTime + 30;
           });
-        } else {
-          this.availableTimes = times;
         }
       }
     }" class="flex gap-4">
       <div class="relative flex-1">
         <label for="date" class="block text-[rgb(113,32,30)] font-mono">Date</label>
-        <input
-          type="date"
+        <select
           name="date"
           id="date"
           required
           x-model="selectedDate"
           @change="updateTimes"
-          min={new Date().toISOString().split('T')[0]}
-          class="w-full h-[42px] p-2 pr-12 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)] [&::-webkit-calendar-picker-indicator]:w-8 [&::-webkit-calendar-picker-indicator]:h-8 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-2 [&::-webkit-calendar-picker-indicator]:opacity-100 cursor-pointer"
-          @click="$el.showPicker()"
-        />
+          class="w-full h-[42px] p-2 pr-12 border-2 border-[rgb(113,32,30)] rounded bg-[rgb(251,249,229)] appearance-none cursor-pointer"
+        >
+          <template x-for="date in allowedDates" :key="date">
+            <option
+              :value="date"
+              x-text="new Date(date).toLocaleDateString('en-AU', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short'
+              })"
+            ></option>
+          </template>
+        </select>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-8 absolute right-2 top-[28px] p-1 pointer-events-none text-[rgb(113,32,30)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+        </svg>
       </div>
 
       <div class="relative flex-1">
@@ -178,16 +204,16 @@
           5
         </label>
         <label class="flex items-center cursor-pointer">
+          <input type="radio" name="guests" value="6" class="mr-1" />
+          6
+        </label>
+        <label class="flex items-center cursor-pointer">
           <input type="radio" name="guests" value="7" class="mr-1" />
           7
         </label>
         <label class="flex items-center cursor-pointer">
-          <input type="radio" name="guests" value="10" class="mr-1" />
-          10
-        </label>
-        <label class="flex items-center cursor-pointer">
-          <input type="radio" name="guests" value="more" class="mr-1" />
-          10+
+          <input type="radio" name="guests" value="8" class="mr-1" />
+          8 or More
         </label>
       </div>
     </div>
@@ -220,3 +246,38 @@
     </p>
   </div>
 </div>
+
+<style>
+  /* Add this to disable non-allowed dates in the calendar */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+  }
+</style>
+
+<script>
+  // Add this script to handle date restrictions
+  document.addEventListener('DOMContentLoaded', () => {
+    const dateInputs = document.querySelectorAll('input[type="date"][data-allowed-dates]');
+
+    dateInputs.forEach(input => {
+      const allowedDates = JSON.parse(input.dataset.allowedDates);
+
+      input.addEventListener('input', (e) => {
+        const selectedDate = e.target.value;
+        if (!allowedDates.includes(selectedDate)) {
+          e.target.value = '';
+          alert('Please select one of the available dates:\n' + allowedDates.join('\n'));
+        }
+      });
+    });
+  });
+</script>

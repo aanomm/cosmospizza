@@ -135,7 +135,7 @@
                 },
                 {
                   "name": "Karma drinks",
-                  "price": 6
+                  "price": 6.0
                 },
                 {
                   "name": "Naked cocktails",
@@ -147,7 +147,7 @@
                 },
                 {
                   "name": "Water",
-                  "price": 4
+                  "price": 4.0
                 },
                 {
                   "name": "Sparkling water",
