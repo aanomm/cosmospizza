@@ -20,13 +20,6 @@
       month: 'short'
     })
 
-    // Create subject line input
-    const subjectInput = document.createElement('input')
-    subjectInput.type = 'hidden'
-    subjectInput.name = 'subject'
-    subjectInput.value = `COSMO'S BOOKING — ${e.target.name.value} ${formattedDate} ${this.selectedTime} ${e.target.guests.value}`
-    e.target.appendChild(subjectInput)
-
     // Create a hidden input for the formatted date
     const dateInput = document.createElement('input')
     dateInput.type = 'hidden'
@@ -89,6 +82,11 @@
     </div>
 
     <input type="hidden" name="form-name" value="booking" />
+    <input
+      type="hidden"
+      name="subject"
+      value="COSMO'S BOOKING %{name} (%{guests}) %{date} %{time}"
+    />
 
     <div>
       <label for="name" class="block text-[rgb(113,32,30)] font-mono">Name</label>
