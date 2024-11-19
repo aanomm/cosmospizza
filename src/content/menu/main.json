@@ -1,0 +1,163 @@
+{
+  "sections": [
+    {
+      "title": "Entrées",
+      "items": [
+        {
+          "name": "Caprese Salad",
+          "price": 12,
+          "description": "Tomato, fior di latte, white balsamic, and basil"
+        },
+        {
+          "name": "Focaccia",
+          "price": 8,
+          "description": "Olive oil and sea salt"
+        },
+        {
+          "name": "Jamon Serrano",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "title": "Mains",
+      "items": [
+        {
+          "name": "Cacio e Pepe",
+          "price": 22,
+          "description": "Brown butter, sage, and pecorino"
+        },
+        {
+          "name": "Fusilli",
+          "price": 22,
+          "description": "Gorgonzola, spinach, and pangrattato #gfo"
+        },
+        {
+          "name": "Rigatoni",
+          "price": 22,
+          "description": "Sausage, anchovy, broccoli, chilli, confit garlic, and pecorino #gfo"
+        }
+      ]
+    },
+    {
+      "title": "Desserts",
+      "items": [
+        {
+          "name": "Buttermilk and Rose Panna Cotta",
+          "price": 15,
+          "description": "Sunny Times honey and roasted pistachios"
+        },
+        {
+          "name": "Affogato",
+          "price": 16,
+          "description": "Vanilla ice cream, coffee liqueur, and biscotti"
+        }
+      ]
+    },
+    {
+      "title": "Drinks",
+      "items": [
+        {
+          "name": "Wine",
+          "price": 0,
+          "subsections": [
+            {
+              "title": "Wine",
+              "items": [
+                {
+                  "name": "Mulline Pinot Noir Red",
+                  "price": 10
+                },
+                {
+                  "name": "Dott. Prosecco",
+                  "price": 11
+                },
+                {
+                  "name": "Shut The Gate Riesling",
+                  "price": 10
+                },
+                {
+                  "name": "Pannel Arido Rose",
+                  "price": 11
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cocktails",
+          "price": 0,
+          "subsections": [
+            {
+              "title": "Cocktails",
+              "items": [
+                {
+                  "name": "Aperol Spritz",
+                  "price": 16
+                },
+                {
+                  "name": "Limoncello Spritz",
+                  "price": 16
+                },
+                {
+                  "name": "Negroni",
+                  "price": 19
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Beer",
+          "price": 0,
+          "subsections": [
+            {
+              "title": "Beer",
+              "items": [
+                {
+                  "name": "Moon Dog Pale Ale",
+                  "price": 8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Soft Drinks",
+          "price": 0,
+          "subsections": [
+            {
+              "title": "Soft Drinks",
+              "items": [
+                {
+                  "name": "Almighty juices",
+                  "price": 6.5
+                },
+                {
+                  "name": "Karma drinks",
+                  "price": 6
+                },
+                {
+                  "name": "Naked cocktails",
+                  "price": 7.5
+                },
+                {
+                  "name": "Ginger beer",
+                  "price": 4.5
+                },
+                {
+                  "name": "Water",
+                  "price": 4
+                },
+                {
+                  "name": "Sparkling water",
+                  "price": 4.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

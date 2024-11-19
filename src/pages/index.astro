@@ -2,7 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.webp';
-import BookingForm from '../components/BookingForm.astro';
+import BookingFormNew from '../components/BookingFormNew.astro';
+import { getEntry } from 'astro:content';
+
+const menu = await getEntry('menu', 'main');
 ---
 
 <Layout title="COSMOS Pizza">
@@ -12,66 +15,135 @@ import BookingForm from '../components/BookingForm.astro';
       <Image src={logo} alt="COSMOS Pizza" quality="high" loading="eager" format="webp" />
     </a>
 
-    <h1 class="text-center text-2xl font-bold uppercase font-mono mx-auto mb-6">Pizza &middot; Pasta &middot; All-day Italian</h1>
+    <h1 class="text-center text-2xl font-bold uppercase font-mono mx-auto mb-6">All-day Italian</h1>
 
     <!-- Hours -->
-    <p class="text-center text-2xl text-[rgb(113,32,30)] font-mono mb-6">Mon to Fri: 11am - 4pm</p>
+    <!-- <p class="text-center text-2xl text-[rgb(113,32,30)] font-mono mb-6">Mon to Fri: 11am - 4pm</p> -->
 
     <!-- Phone -->
-    <a href="tel:+61493686634" class="block text-center text-2xl mb-12 transition-all duration-200 hover:scale-105">
+    <!-- <a href="tel:+61493686634" class="block text-center text-2xl mb-12 transition-all duration-200 hover:scale-105">
       <span class="text-[rgb(113,32,30)] hover:animate-shake">☎</span>
       <span class="font-bold">0493 686 634</span>
-    </a>
+    </a> -->
+
+    <!-- Address -->
+    <div class="text-center text-lg font-mono mb-12">
+      <a href="https://liinks.me/cosmos-map" class="hover:opacity-70">
+        <p class="font-bold">159 Monash Road, Parkville, VIC 3052</p>
+        <p>(Inside the Arts and Cultural Building</p>
+        <p>at The University of Melbourne)</p>
+      </a>
+    </div>
 
     <!-- Description -->
-    <p class="text-pretty text-lg font-mono max-w-[556px] mx-auto mb-12">
-      <strong>Everything you expect from an afternoon at Nonna's.</strong> We're an all-day Italian diner serving pizza, pasta and aperitivo at The University of Melbourne.
+    <p class="text-center text-lg font-mono max-w-[556px] mx-auto mb-12">
+      <strong>Everything you expect from an afternoon at Nonna's.</strong> We're an all-day Italian diner serving pizza, pasta, and aperitivo at The University of Melbourne.
     </p>
 
-    <!-- Menu Button -->
-    <a href="https://cosmos.benu.au/" class="block w-[549px] max-w-full mx-auto py-6 px-8 mb-6 rounded bg-[rgb(113,32,30)] text-white text-2xl font-mono relative transition-all duration-200 hover:scale-105 flex items-center">
+
+
+    <!-- OLD Menu Button -->
+    <!-- <a href="https://cosmos.benu.au/" class="block w-[549px] max-w-full mx-auto py-6 px-8 mb-6 rounded bg-[rgb(113,32,30)] text-white text-2xl font-mono relative transition-all duration-200 hover:scale-105 flex items-center">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
       View Our Menu
-    </a>
+    </a> -->
 
-    <!-- Bookings Button/Accordion -->
-    <div x-data="{ open: false }" class="w-[549px] max-w-full mx-auto mb-6">
-      <button
-        @click="open = !open"
-        type="button"
-        class="w-full py-6 px-8 rounded-t bg-[rgb(251,249,229)] text-[rgb(113,32,30)] text-2xl font-mono text-center relative transition-all duration-200 hover:opacity-90 border-4 border-[rgb(113,32,30)] flex items-center justify-between"
-        :class="{ 'rounded-b': !open, 'border-b-0': open }"
-      >
-        <span class="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          Make a Booking
-        </span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+     <!-- New Menu Button -->
+     <div x-data="{ openMenu: false, openBooking: false }">
+       <div class="w-[549px] max-w-full mx-auto mb-6">
+         <button
+           @click="openMenu = !openMenu; openBooking = false"
+           type="button"
+           class="w-full py-6 px-8 rounded-t bg-[rgb(113,32,30)] text-white text-2xl font-mono relative transition-all duration-200 hover:opacity-90 flex items-center justify-between"
+           :class="{ 'rounded-b': !openMenu }"
+         >
+           <span class="flex items-center">
+             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+             </svg>
+             View Our Menu
+           </span>
+           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="{'rotate-180': openMenu}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+           </svg>
+         </button>
 
-      <div
-        x-show="open"
-        x-collapse
-        x-cloak
-        class="p-6 border-4 border-t-0 border-[rgb(113,32,30)] rounded-b bg-[rgb(251,249,229)]"
-      >
-        <form name="booking" netlify netlify-honeypot="bot-field" hidden>
-          <input type="text" name="name" />
-          <input type="tel" name="phone" />
-          <input type="email" name="email" />
-          <input type="date" name="date" />
-          <input type="time" name="time" />
-          <input type="number" name="guests" />
-        </form>
-        <BookingForm />
-      </div>
-    </div>
+         <div x-show="openMenu" x-collapse x-cloak class="p-6 border-4 border-t-0 border-[rgb(113,32,30)] rounded-b bg-[rgb(251,249,229)]">
+           <div class="space-y-8 font-mono">
+             {menu.data.sections.map(section => (
+               <section>
+                 <h2 class="text-xl font-bold mb-3 uppercase text-[rgb(113,32,30)] border-b-2 border-[rgb(113,32,30)] pb-1">{section.title}</h2>
+                 <div class="space-y-2">
+                   {section.items.map(item => (
+                     <div>
+                       {item.subsections ? (
+                         <div class="space-y-6">
+                           {item.subsections.map(subsection => (
+                             <div>
+                               <h3 class="font-bold mb-2 text-[rgb(113,32,30)]">{subsection.title}</h3>
+                               <div class="space-y-2">
+                                 {subsection.items.map(subitem => (
+                                   <div class="flex justify-between">
+                                     <span>{subitem.name}</span>
+                                     <span class="font-bold text-[rgb(113,32,30)]">${subitem.price}</span>
+                                   </div>
+                                 ))}
+                               </div>
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <>
+                           <div class="flex justify-between">
+                             <span class="font-bold text-[rgb(113,32,30)]">{item.name}</span>
+                             <span class="font-bold text-[rgb(113,32,30)]">${item.price}</span>
+                           </div>
+                           {item.description && <p class="text-sm">{item.description}</p>}
+                         </>
+                       )}
+                     </div>
+                   ))}
+                 </div>
+               </section>
+             ))}
+           </div>
+         </div>
+       </div>
+
+       <!-- Bookings Button/Accordion -->
+       <div class="w-[549px] max-w-full mx-auto mb-6">
+         <button
+           @click="openBooking = !openBooking; openMenu = false"
+           type="button"
+           class="w-full py-6 px-8 rounded-t bg-[rgb(251,249,229)] text-[rgb(113,32,30)] text-2xl font-mono text-center relative transition-all duration-200 hover:opacity-90 border-4 border-[rgb(113,32,30)] flex items-center justify-between"
+           :class="{ 'rounded-b': !openBooking, 'border-b-0': openBooking }"
+         >
+           <span class="flex items-center">
+             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+             </svg>
+             Make a Booking
+           </span>
+           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="{'rotate-180': openBooking}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+           </svg>
+         </button>
+
+         <div x-show="openBooking" x-collapse x-cloak class="p-6 border-4 border-t-0 border-[rgb(113,32,30)] rounded-b bg-[rgb(251,249,229)]">
+           <form name="booking" netlify netlify-honeypot="bot-field" hidden>
+             <input type="text" name="name" />
+             <input type="tel" name="phone" />
+             <input type="email" name="email" />
+             <input type="date" name="date" />
+             <input type="time" name="time" />
+             <input type="number" name="guests" />
+           </form>
+           <BookingFormNew />
+         </div>
+       </div>
+     </div>
 
     <!-- Map Button -->
     <a href="https://liinks.me/cosmos-map" target="_blank" rel="noopener noreferrer" class="block w-[549px] max-w-full mx-auto py-6 px-8 mb-6 rounded bg-[rgb(113,32,30)] text-white text-2xl font-mono relative transition-all duration-200 hover:scale-105 flex items-center">
@@ -90,14 +162,7 @@ import BookingForm from '../components/BookingForm.astro';
       See Us @cosmos_unimelb
     </a>
 
-    <!-- Address -->
-    <div class="text-center text-lg font-mono mb-12">
-      <a href="https://liinks.me/cosmos-map" class="hover:opacity-70">
-        <p class="font-bold">159 Monash Road, Parkville, VIC 3052</p>
-        <p>(Inside the Arts and Cultural Building</p>
-        <p>at The University of Melbourne)</p>
-      </a>
-    </div>
+
 
     <!-- Credits -->
     <a href="https://www.lanebrain.co/" class="flex items-center justify-center gap-2 text-lg font-mono" target="_blank" rel="noopener noreferrer" aria-label="Visit LaneBrain website (opens in new tab)">
