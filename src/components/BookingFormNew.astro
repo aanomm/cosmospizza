@@ -11,6 +11,15 @@
     e.preventDefault()
     this.selectedDate = e.target.date.value
     this.selectedTime = e.target.time.value
+
+    // Create a hidden input for the day of week
+    const dayOfWeek = new Date(this.selectedDate).toLocaleDateString('en-AU', { weekday: 'long' })
+    const dayInput = document.createElement('input')
+    dayInput.type = 'hidden'
+    dayInput.name = 'dayOfWeek'
+    dayInput.value = dayOfWeek
+    e.target.appendChild(dayInput)
+
     fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
