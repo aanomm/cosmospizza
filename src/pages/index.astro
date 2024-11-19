@@ -15,7 +15,7 @@ const menu = await getEntry('menu', 'main');
       <Image src={logo} alt="COSMOS Pizza" quality="high" loading="eager" format="webp" />
     </a>
 
-    <h1 class="text-center text-2xl font-bold uppercase font-mono mx-auto mb-6">All-day Italian</h1>
+    <!-- <h1 class="text-center text-2xl font-bold uppercase font-mono mx-auto mb-6">All-day Italian</h1> -->
 
     <!-- Hours -->
     <!-- <p class="text-center text-2xl text-[rgb(113,32,30)] font-mono mb-6">Mon to Fri: 11am - 4pm</p> -->
@@ -26,6 +26,11 @@ const menu = await getEntry('menu', 'main');
       <span class="font-bold">0493 686 634</span>
     </a> -->
 
+     <!-- Description -->
+     <p class="text-center text-lg font-mono max-w-[556px] mx-auto mb-12">
+      <strong>Everything you expect from an afternoon at Nonna's.</strong> We're an Italian diner at The University of Melbourne.
+    </p>
+
     <!-- Address -->
     <div class="text-center text-lg font-mono mb-12">
       <a href="https://liinks.me/cosmos-map" class="hover:opacity-70">
@@ -35,10 +40,7 @@ const menu = await getEntry('menu', 'main');
       </a>
     </div>
 
-    <!-- Description -->
-    <p class="text-center text-lg font-mono max-w-[556px] mx-auto mb-12">
-      <strong>Everything you expect from an afternoon at Nonna's.</strong> We're an all-day Italian diner serving pizza, pasta, and aperitivo at The University of Melbourne.
-    </p>
+
 
      <!-- New Menu Button -->
      <div x-data="{ openMenu: false, openBooking: false }">
